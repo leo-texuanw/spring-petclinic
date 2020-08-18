@@ -1,6 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -27,53 +27,31 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2020.1"
 
 project {
-    vcsRoot(PetclinicVcs)
-    buildType(wrapWithFeature(Build){
-        swabra {}
-    })
+
+    vcsRoot(HttpsGithubComLeoTexuanwSpringPetclinicRefsHeadsMain_2)
+
+    buildType(Build)
 }
 
 object Build : BuildType({
-    id("Build")
     name = "Build"
-    // artifactRules
 
     vcs {
-        root(PetclinicVcs)
-    }
-
-    steps {
-        maven {
-            //goals = "clean test"
-            //runnerArgs = "-Dmaven.test.failure.ignore=true"
-            goals = "clean package"
-
-            // Other options
-            dockerImage = "maven:3.6.0-jdk.8"
-            jvmArgs = "-Xmx512"
-        }
+        root(HttpsGithubComLeoTexuanwSpringPetclinicRefsHeadsMain_2)
     }
 
     triggers {
         vcs {
-
         }
     }
 })
 
-object PetclinicVcs : GitVcsRoot({
-    name = "PetclinicVcs"
-    url = "https://github.com/leo-texuanw/spring-petclinic.git"
-    branch = "+:refs/heads/main"  // default
+object HttpsGithubComLeoTexuanwSpringPetclinicRefsHeadsMain_2 : GitVcsRoot({
+    name = "https://github.com/leo-texuanw/spring-petclinic#refs/heads/main"
+    url = "https://github.com/leo-texuanw/spring-petclinic"
+    branch = "refs/heads/main"
     authMethod = password {
         userName = "leo-texuanw"
-        password = "credentialsJSON:a0157873-1240-4b28-97b7-cf4e8470c58f"
+        password = "credentialsJSON:3f30b422-06a3-47e2-904b-7ae8c05a9719"
     }
 })
-
-fun wrapWithFeature(buildType: BuildType, featureBlock: BuildFeatures.() -> Unit): BuildType {
-    buildType.features {
-        featureBlock()
-    }
-    return buildType
-}
