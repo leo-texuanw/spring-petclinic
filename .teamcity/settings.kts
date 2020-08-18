@@ -31,7 +31,9 @@ project {
 
     vcsRoot(PetclinicVcs)
 
-    buildType(Build)
+    buildType(wrapWithFeature(Build){
+        swabra {}
+    })
 }
 
 object Build : BuildType({
@@ -57,7 +59,7 @@ object Build : BuildType({
 })
 
 object PetclinicVcs : GitVcsRoot({
-    name = "https://github.com/leo-texuanw/spring-petclinic#refs/heads/main"
+    name = "PetclinicVcs"
     url = "https://github.com/leo-texuanw/spring-petclinic"
     branch = "refs/heads/main"
     authMethod = password {
@@ -65,3 +67,10 @@ object PetclinicVcs : GitVcsRoot({
         password = "credentialsJSON:3f30b422-06a3-47e2-904b-7ae8c05a9719"
     }
 })
+
+fun wrapWithFeature(buildType: BuildType, featureBlock: BuildFeatures.() -> Unit): BuildType {
+    buildType.features {
+        featureBlock()
+    }
+    return buildType
+}
