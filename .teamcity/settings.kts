@@ -29,28 +29,7 @@ version = "2020.1"
 project {
 
     buildType(BuildDsl)
-    buildType(Build)
 }
-
-object Build : BuildType({
-    name = "Build"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-        maven {
-            goals = "clean test"
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
-        }
-    }
-
-    triggers {
-        vcs {
-        }
-    }
-})
 
 object BuildDsl : BuildType({
     name = "Build_DSL"
