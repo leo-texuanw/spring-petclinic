@@ -1,5 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 
@@ -35,12 +36,36 @@ project {
 
     vcsRoot(PetclinicVcs)
 
-    buildType(Build)
+    buildType(Package)
+    buildType(Publish)
 }
 
-object Build : BuildType({
-    id("Build")
-    name = "Build"
+object Package : BuildType({
+    id("Package")
+    name = "Package"
+
+    vcs {
+        root(PetclinicVcs)
+    }
+
+    steps {
+        script {
+            name = "package"
+            scriptContent = """
+                echo "artifact" > arti.txt
+            """.trimIndent()
+        }
+    }
+
+    triggers {
+        vcs {
+        }
+    }
+})
+
+object Publish : BuildType({
+    id("Publish")
+    name = "Publish"
 
     vcs {
         root(PetclinicVcs)
@@ -49,13 +74,18 @@ object Build : BuildType({
     steps {
         maven {
             goals = "clean test"
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
         }
     }
 
     triggers {
         vcs {
+        }
+    }
 
+    dependencies {
+        snapshot(Package){}
+        artifacts(Package) {
+            artifactRules = "arti.txt"
         }
     }
 })
