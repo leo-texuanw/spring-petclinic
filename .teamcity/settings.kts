@@ -28,6 +28,10 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2020.1"
 
 project {
+    params {
+        // This makes it impossible to change the build settings through the UI
+        param("teamcity.ui.settings.readOnly", "true")
+    }
 
     vcsRoot(PetclinicVcs)
 
