@@ -43,6 +43,8 @@ project {
 object Package : BuildType({
     id("Package")
     name = "Package"
+    artifactRules = "arti.txt"
+
 
     vcs {
         root(PetclinicVcs)
@@ -59,7 +61,6 @@ object Package : BuildType({
 
     triggers {
         vcs {
-
         }
     }
 })
