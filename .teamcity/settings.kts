@@ -27,26 +27,53 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2020.1"
 
 project {
-
-    buildType(Build)
+    vcsRoot(PetclinicVcs)
+    buildType(wrapWithFeature(Build){
+        swabra {}
+    })
 }
 
 object Build : BuildType({
+    id("Build")
     name = "Build"
+    // artifactRules
 
     vcs {
-        root(DslContext.settingsRoot)
+        root(PetclinicVcs)
     }
 
     steps {
         maven {
-            goals = "clean test"
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
+            //goals = "clean test"
+            //runnerArgs = "-Dmaven.test.failure.ignore=true"
+            goals = "clean package"
+
+            // Other options
+            dockerImage = "maven:3.6.0-jdk.8"
+            jvmArgs = "-Xmx512"
         }
     }
 
     triggers {
         vcs {
+
         }
     }
 })
+
+object PetclinicVcs : GitVcsRoot({
+    name = "PetclinicVcs"
+    url = "https://github.com/leo-texuanw/spring-petclinic.git"
+    branch = "+:refs/heads/main"  // default
+    authMethod = password {
+        userName = "leo-texuanw"
+        password = "credentialsJSON:a0157873-1240-4b28-97b7-cf4e8470c58f"
+    }
+})
+
+fun wrapWithFeature(buildType: BuildType, featureBlock: BuildFeatures.() -> Unit): BuildType {
+    buildType.features {
+        featureBlock()
+    }
+    return buildType
+}
