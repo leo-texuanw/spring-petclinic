@@ -31,9 +31,7 @@ project {
 
     vcsRoot(PetclinicVcs)
 
-    buildType(wrapWithFeature(Build){
-        swabra {}
-    })
+    buildType(Build)
 }
 
 object Build : BuildType({
@@ -67,10 +65,3 @@ object PetclinicVcs : GitVcsRoot({
         password = "credentialsJSON:3f30b422-06a3-47e2-904b-7ae8c05a9719"
     }
 })
-
-fun wrapWithFeature(buildType: BuildType, featureBlock: BuildFeatures.() -> Unit): BuildType {
-    buildType.features {
-        featureBlock()
-    }
-    return buildType
-}
