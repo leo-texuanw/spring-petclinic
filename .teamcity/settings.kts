@@ -29,7 +29,7 @@ version = "2020.1"
 
 project {
 
-    vcsRoot(HttpsGithubComLeoTexuanwSpringPetclinicRefsHeadsMain_2)
+    vcsRoot(PetclinicVcs)
 
     buildType(Build)
 }
