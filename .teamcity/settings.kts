@@ -35,10 +35,11 @@ project {
 }
 
 object Build : BuildType({
+    id("Build")
     name = "Build"
 
     vcs {
-        root(HttpsGithubComLeoTexuanwSpringPetclinicRefsHeadsMain_2)
+        root(PetclinicVcs)
     }
 
     steps {
@@ -54,7 +55,7 @@ object Build : BuildType({
     }
 })
 
-object HttpsGithubComLeoTexuanwSpringPetclinicRefsHeadsMain_2 : GitVcsRoot({
+object PetclinicVcs : GitVcsRoot({
     name = "https://github.com/leo-texuanw/spring-petclinic#refs/heads/main"
     url = "https://github.com/leo-texuanw/spring-petclinic"
     branch = "refs/heads/main"
