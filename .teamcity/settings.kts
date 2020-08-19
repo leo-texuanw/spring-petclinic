@@ -31,7 +31,7 @@ version = "2020.1"
 project {
     params {
         // This makes it impossible to change the build settings through the UI
-        param("teamcity.ui.settings.readOnly", "true")
+        // param("teamcity.ui.settings.readOnly", "true")
     }
 
     vcsRoot(PetclinicVcs)
